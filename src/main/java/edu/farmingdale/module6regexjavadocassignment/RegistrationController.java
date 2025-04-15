@@ -1,8 +1,13 @@
 package edu.farmingdale.module6regexjavadocassignment;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class RegistrationController {
 
@@ -20,6 +25,22 @@ public class RegistrationController {
 
     @FXML
     private TextField zipCodeInput;
+
+    @FXML
+    void handleAddButtonClick() {
+        try {
+            // Load the splash page FXML
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-page.fxml"));
+            Scene loginScene = new Scene(fxmlLoader.load());
+
+            // Get the current stage and set the new scene
+            Stage currentStage = (Stage) addButton.getScene().getWindow();
+            currentStage.setScene(loginScene);
+            currentStage.setTitle("Login Page");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Validation flags
     boolean isValidName = false;
