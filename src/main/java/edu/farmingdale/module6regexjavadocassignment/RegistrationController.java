@@ -21,33 +21,44 @@ public class RegistrationController {
     @FXML
     private TextField zipCodeInput;
 
+    // Validation flags
+    boolean isValidName = false;
+    boolean isValidBirthDate = false;
+    boolean isValidEmail = false;
+    boolean isValidZipCode = false;
+
     @FXML
     public void initialize() {
 
         // Add focus listeners to validate inputs
         nameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
-                validateName();
+                isValidName = validateName();
+                validateAll();
             }
         });
 
         birthDateInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
-                validateBirthDate();
+                isValidBirthDate = validateBirthDate();
+                validateAll();
             }
         });
 
         emailInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
-                validateEmail();
+                isValidEmail = validateEmail();
+                validateAll();
             }
         });
 
         zipCodeInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
-                validateZipCode();
+                isValidZipCode = validateZipCode();
+                validateAll();
             }
         });
+
     }
 
     private boolean validateName() {
@@ -91,6 +102,14 @@ public class RegistrationController {
         } else {
             zipCodeInput.setStyle("-fx-border-color: green");
             return true;
+        }
+    }
+
+    private void validateAll() {
+        if (isValidName && isValidBirthDate && isValidEmail && isValidZipCode) {;
+            addButton.setDisable(false);
+        } else {
+            addButton.setDisable(true);
         }
     }
 }
