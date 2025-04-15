@@ -34,33 +34,37 @@ public class RegistrationController {
         nameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
                 isValidName = validateName();
-                validateAll();
+                validateAll(isValidName, isValidBirthDate, isValidEmail, isValidZipCode);
             }
         });
 
         birthDateInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
                 isValidBirthDate = validateBirthDate();
-                validateAll();
+                validateAll(isValidName, isValidBirthDate, isValidEmail, isValidZipCode);
             }
         });
 
         emailInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
                 isValidEmail = validateEmail();
-                validateAll();
+                validateAll(isValidName, isValidBirthDate, isValidEmail, isValidZipCode);
             }
         });
 
         zipCodeInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // Focus lost
                 isValidZipCode = validateZipCode();
-                validateAll();
+                validateAll(isValidName, isValidBirthDate, isValidEmail, isValidZipCode);
             }
         });
 
     }
 
+    /**
+     * Validates the name input and sets the style accordingly
+     * @return true if valid, false otherwise
+     */
     private boolean validateName() {
         String name = nameInput.getText();
         if (!name.matches("^[a-zA-Z]+\\s[a-zA-Z]+$")) {
@@ -72,6 +76,10 @@ public class RegistrationController {
         }
     }
 
+    /**
+     * Validates the birth date input and sets the style accordingly
+     * @return true if valid, false otherwise
+     */
     private boolean validateBirthDate() {
         String birthDate = birthDateInput.getText();
         if (!birthDate.matches("^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$")) { // Example: YYYY-MM-DD
@@ -83,6 +91,10 @@ public class RegistrationController {
         }
     }
 
+    /**
+     * Validates the email input and sets the style accordingly
+     * @return true if valid, false otherwise
+     */
     private boolean validateEmail() {
         String email = emailInput.getText();
         if (!email.matches("^[\\w.%+-]+@farmingdale\\.edu$")) {
@@ -94,6 +106,10 @@ public class RegistrationController {
         }
     }
 
+    /**
+     * Validates the zip code input and sets the style accordingly
+     * @return true if valid, false otherwise
+     */
     private boolean validateZipCode() {
         String zipCode = zipCodeInput.getText();
         if (!zipCode.matches("^\\d{5}$")) { // Example: 5-digit zip code
@@ -105,11 +121,26 @@ public class RegistrationController {
         }
     }
 
-    private void validateAll() {
-        if (isValidName && isValidBirthDate && isValidEmail && isValidZipCode) {;
-            addButton.setDisable(false);
-        } else {
-            addButton.setDisable(true);
+    /**
+     * sets the button to enabled or disabled based on the validation results
+     * @param val1 value 1 to be evaluated
+     * @param val2 value 2 to be evaluated
+     * @param val3 value 3 to be evaluated
+     * @param val4 value 4 to be evaluated
+     * @return true if all values are valid, false otherwise
+     * @throws IllegalArgumentException if an error occurs during validation
+     */
+    private boolean validateAll(boolean val1, boolean val2, boolean val3, boolean val4) {
+        try {
+            if (val1 && val2 && val3 && val4) {
+                addButton.setDisable(false);
+                return true;
+            } else {
+                addButton.setDisable(true);
+                return false;
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("An error occurred during validation: " + e.getMessage(), e);
         }
     }
 }
